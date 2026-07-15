@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Xstreamerpro — a static site hosted with FreeX HoST.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Xstreamerpro">
+    <meta property="og:description" content="Xstreamerpro — a static site hosted with FreeX HoST.">
+    <meta property="og:type" content="website">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X-Streamer Pro | Ultra Fast Glass Dashboard</title>
+    <style>
+        :root {
+            --primary: #ff0055;
+            --secondary: #00ffcc;
+            --bg-dark: #0a0a10;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-blur: blur(20px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #161626 0%, var(--bg-dark) 100%);
+            color: #ffffff;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .header-container {
+            width: 100%;
+            max-width: 700px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .settings-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: var(--glass-blur);
+        }
+
+        .control-panel {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 700px;
+            margin-bottom: 40px;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .input-row { grid-template-columns: 1fr; }
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group.full-width {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 12px;
+            color: var(--secondary);
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+        }
+
+        button.action-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, var(--primary), #e6004c);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 0, 85, 0.25);
+        }
+
+        .info-card {
+            background: rgba(0, 255, 204, 0.02);
+            border: 1px dashed rgba(0, 255, 204, 0.15);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #a3c7c1;
+            line-height: 1.5;
+        }
+
+        .status-bar {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #8a8a9e;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 15px;
+        }
+
+        .video-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1440px;
+        }
+
+        .video-box {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            background: #000;
+            border-radius: 14px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .video-box iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%; border: 0;
+        }
+
+        .settings-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(10, 10, 16, 0.95);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .settings-content {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 40px 30px;
+            border-radius: 24px;
+            max-width: 550px;
+            width: 100%;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .close-settings {
+            position: absolute;
+            top: 20px; right: 20px;
+            background: none; border: none;
+            color: #8a8a9e; font-size: 24px;
+            cursor: pointer;
+        }
+
+        .settings-title {
+            font-size: 24px; font-weight: 700; margin-bottom: 25px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .billing-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        .badge-free { background: rgba(255, 255, 255, 0.1); color: #fff; }
+        .badge-paid { background: rgba(0, 255, 204, 0.2); color: var(--secondary); border: 1px solid var(--secondary); }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <h1>X-Streamer Pro</h1>
+        <button class="settings-btn" onclick="openSettingsScreen()">⚙️</button>
+    </div>
+
+    <div class="control-panel">
+        <div class="input-group full-width">
+            <label for="videoLink">YouTube Video Target URL</label>
+            <input type="text" id="videoLink" placeholder="https://www.youtube.com/watch?v=..." required>
+        </div>
+        
+        <div class="input-row">
+            <div class="input-group">
+                <label for="tabCount">Thread/Tab Count</label>
+                <input type="number" id="tabCount" min="1" value="5">
+            </div>
+            <div class="input-group">
+                <label for="refreshTime">Auto Refresh (Seconds)</label>
+                <input type="number" id="refreshTime" min="30" value="65">
+            </div>
+        </div>
+
+        <button class="action-btn" onclick="initializeAutomation()">Start Automation</button>
+
+        <div class="info-card">
+            💡 <strong>Pro Tip:</strong> To prevent view dropping, connect to a high-quality VPN before running this dashboard, and switch country locations every 10-15 minutes.
+        </div>
+
+        <div class="status-bar" id="statusBar">System Ready. Awaiting configurations...</div>
+    </div>
+
+    <div class="video-container" id="videoContainer"></div>
+
+    <div class="settings-screen" id="settingsScreen">
+        <div class="settings-content">
+            <button class="close-settings" onclick="closeSettingsScreen()">✕</button>
+            <div class="settings-title">Billing & Subscription Settings</div>
+            
+            <div id="billingStatusBadge" class="billing-badge badge-free">Free Tier Active</div>
+            
+            <div class="input-group" style="margin-bottom: 15px;">
+                <label for="apiKeyInput">Enter Pro API Key to Unlock Unlimited</label>
+                <div style="display: flex; gap: 10px; margin-top: 5px;">
+                    <input type="text" id="apiKeyInput" placeholder="Enter your premium API Key here...">
+                    <button class="action-btn" style="width: auto; padding: 0 20px;" onclick="validateApiKey()">Activate</button>
+                </div>
+            </div>
+
+            <div id="usageStats" style="font-size: 13px; color: #8a8a9e; line-height: 1.6;">
+                Free usage limits: Max 5 tabs | Total remaining runs: <span id="runsLeft">5</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let intervals = [];
+        let isPaid = false;
+        let freeRunCount = 0;
+        const maxFreeRuns = 5;
+
+        const VALID_API_KEYS = [
+            "XPRO-8829-FREE-UNLIMITED", 
+            "NEON-GLASS-9912-VIP", 
+            "SSC-2026-AUTOMATION-KEY", 
+            "XSTREAM-7734-PREMIUM-PASS", 
+            "VIP-GLOBAL-5521-UNLOCKED"
+        ];
+
+        // অটোমেটিকভাবে পেজ লোড হওয়ার সময় স্টোরেজ চেক করার ফাংশন
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedKey = localStorage.getItem('xstreamer_api_key');
+            if (savedKey && VALID_API_KEYS.includes(savedKey)) {
+                isPaid = true;
+                document.getElementById('apiKeyInput').value = savedKey;
+                applyPremiumUI();
+            }
+        });
+
+        function openSettingsScreen() {
+            document.getElementById('settingsScreen').style.display = 'flex';
+        }
+
+        function closeSettingsScreen() {
+            document.getElementById('settingsScreen').style.display = 'none';
+        }
+
+        function applyPremiumUI() {
+            const badge = document.getElementById('billingStatusBadge');
+            if (badge) {
+                badge.className = "billing-badge badge-paid";
+                badge.innerText = "Premium Paid Active";
+            }
+            const stats = document.getElementById('usageStats');
+            if (stats) {
+                stats.innerHTML = "✨ Premium Subscription Active: Unlimited threads & Unlimited runtime enabled.";
+            }
+        }
+
+        function validateApiKey() {
+            const enteredKey = document.getElementById('apiKeyInput').value.trim().toUpperCase();
+            
+            if (VALID_API_KEYS.includes(enteredKey)) {
+                isPaid = true;
+                // ব্রাউজারের লোকাল মেমোরিতে কী-টি সেভ করে রাখা হচ্ছে
+                localStorage.setItem('xstreamer_api_key', enteredKey);
+                applyPremiumUI();
+                alert("Premium mode activated successfully!");
+                closeSettingsScreen();
+            } else {
+                alert("Invalid API Key! Please check the key and try again.");
+            }
+        }
+
+        function getYouTubeId(url) {
+            url = url.trim();
+            if (url.includes("youtu.be/")) {
+                const cleanStr = url.split("youtu.be/")[1];
+                if (cleanStr) {
+                    return cleanStr.split(/[?#&]/)[0].substring(0, 11);
+                }
+            }
+            const regExp = /^.*(v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            if (match && match[2].length === 11) {
+                return match[2];
+            }
+            return null;
+        }
+
+        function initializeAutomation() {
+            intervals.forEach(clearInterval);
+            intervals = [];
+
+            const url = document.getElementById('videoLink').value;
+            let count = parseInt(document.getElementById('tabCount').value);
+            const refreshTime = parseInt(document.getElementById('refreshTime').value) * 1000;
+            const container = document.getElementById('videoContainer');
+            const statusBar = document.getElementById('statusBar');
+            
+            container.innerHTML = '';
+
+            if (!url) return alert('Please enter a YouTube video URL.');
+            const videoId = getYouTubeId(url);
+            if (!videoId) return alert('Could not parse YouTube Video ID. Please verify your link.');
+            if (isNaN(count) || count < 1) return alert('Please enter a valid thread count.');
+            if (isNaN(refreshTime) || refreshTime < 30000) return alert('Minimum refresh time is 30 seconds.');
+
+            if (!isPaid) {
+                if (freeRunCount >= maxFreeRuns) {
+                    statusBar.innerHTML = `<span style="color:var(--primary)">❌ Free Run Limit Reached!</span> Please upgrade in settings.`;
+                    return alert("Free session limit reached! Please use a valid API Key in the settings screen.");
+                }
+                if (count > 5) {
+                    alert("Free tier is limited to 5 threads maximum. Thread count adjusted to 5.");
+                    count = 5;
+                    document.getElementById('tabCount').value = 5;
+                }
+                freeRunCount++;
+                document.getElementById('runsLeft').innerText = maxFreeRuns - freeRunCount;
+            }
+
+            statusBar.innerText = `Deploying ${count} execution threads...`;
+
+            for (let i = 0; i < count; i++) {
+                const videoBox = document.createElement('div');
+                videoBox.className = 'video-box';
+
+                const iframe = document.createElement('iframe');
+                iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playlist=${videoId}&loop=1&enablejsapi=1`;
+                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                iframe.allowFullscreen = true;
+
+                videoBox.appendChild(iframe);
+                container.appendChild(videoBox);
+
+                const intervalId = setInterval(() => {
+                    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playlist=${videoId}&loop=1&timestamp=${new Date().getTime()}`;
+                }, refreshTime);
+                
+                intervals.push(intervalId);
+            }
+            
+            const modeText = isPaid ? "Premium Mode" : `Free Trial (${freeRunCount}/${maxFreeRuns})`;
+            statusBar.innerHTML = `<span style="color:var(--secondary)">🟢 Threads Active [${modeText}]</span> | Reset cycle: ${refreshTime/1000}s.`;
+        }
+    </script>
+</body>
+</html>
